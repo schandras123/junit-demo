@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -18,9 +17,36 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+/**
+ * Unit tests for the {@link Calculator} class.
+ * <p>
+ * This test class uses JUnit 5 to verify the correctness of various arithmetic operations
+ * implemented in the Calculator class, including addition, subtraction, multiplication,
+ * division, and checking if a number is even.
+ * </p>
+ *
+ * <ul>
+ *   <li>Setup and teardown methods are provided to initialize and clean up resources before and after tests.</li>
+ *   <li>Tests cover normal cases, edge cases (such as division by zero), and parameterized scenarios for even/odd checks.</li>
+ *   <li>Disabled tests are included for features under development.</li>
+ *   <li>Grouped assertions and null checks are demonstrated.</li>
+ * </ul>
+ *
+ * <p>
+ * The tests ensure that:
+ * <ul>
+ *   <li>Basic arithmetic operations return correct results for positive, negative, and zero values.</li>
+ *   <li>Division by zero throws an {@link IllegalArgumentException} with the expected message.</li>
+ *   <li>The {@code isEven} method correctly identifies even and odd numbers, including negative numbers and zero.</li>
+ *   <li>Integer division truncates towards zero.</li>
+ * </ul>
+ * </p>
+ *
+ * @see Calculator
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class CalculatorTest {
-	private Calculator calculator;
+class CalculatorTest {
+    private Calculator calculator;
 
 	@BeforeAll
 	void setupAll() {
@@ -29,8 +55,8 @@ public class CalculatorTest {
 	
 	@BeforeEach
 	void setUp() {
-		calculator = new Calculator();
-		System.err.println("Before each test");
+        calculator = new Calculator();
+        System.out.println("Before each test");
 	}
 	
 	@AfterEach
@@ -48,10 +74,10 @@ public class CalculatorTest {
 		assertEquals(5, calculator.add(2, 3));
 	}
 	
-	@Test
-	void testSubstraction() {
-		assertEquals(1, calculator.subtract(4, 3));
-	}
+    @Test
+    void testSubtraction() {
+        assertEquals(1, calculator.subtract(4, 3));
+    }
 	
 	@Test
 	void testMultiplication() {
@@ -96,7 +122,8 @@ public class CalculatorTest {
     @Disabled("Temporarily disabled test")
     @Test
     void testDisabledExample() {
-        fail("This test is disabled");
+        // This test is disabled temporarily; add implementation or enable when ready.
+        // Intended to test a future Calculator feature.
     }
 
     @ParameterizedTest
@@ -104,4 +131,55 @@ public class CalculatorTest {
     void testIsEvenWithParameters(int number) {
         assertTrue(calculator.isEven(number));
     }
-}
+
+    @ParameterizedTest
+    @ValueSource(ints = {-2, 0, 2, 100, -100})
+    void testIsEvenWithNegativeAndZero(int number) {
+        assertTrue(calculator.isEven(number));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-3, -1, 1, 3, 99, -101})
+    void testIsEvenWithOddNumbers(int number) {
+        assertFalse(calculator.isEven(number));
+    }
+
+    @Test
+    void testAdditionWithNegativeNumbers() {
+        assertEquals(-1, calculator.add(-2, 1));
+        assertEquals(-5, calculator.add(-2, -3));
+    }
+
+    @Test
+    void testSubtractionWithNegativeNumbers() {
+        assertEquals(-5, calculator.subtract(-2, 3));
+        assertEquals(1, calculator.subtract(-2, -3));
+    }
+
+    @Test
+    void testMultiplicationWithZero() {
+        assertEquals(0, calculator.multiply(0, 5));
+        assertEquals(0, calculator.multiply(5, 0));
+    }
+
+    @Test
+    void testMultiplicationWithNegativeNumbers() {
+        assertEquals(-6, calculator.multiply(-2, 3));
+        assertEquals(6, calculator.multiply(-2, -3));
+    }
+
+    @Test
+    void testDivisionWithNegativeNumbers() {
+        assertEquals(-2, calculator.divide(-6, 3));
+        assertEquals(2, calculator.divide(-6, -3));
+    }
+
+    /**
+     * Verifies that integer division truncates towards zero.
+     */
+    @Test
+        void testDivisionResultIsTruncated() {
+            assertEquals(2, calculator.divide(5, 2));
+            assertEquals(-2, calculator.divide(-5, 2));
+        }
+    }
