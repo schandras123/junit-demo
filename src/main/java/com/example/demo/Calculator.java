@@ -20,7 +20,7 @@ package com.example.demo;
  *   <li>{@link #isEven(int)} - Checks if a number is even.</li>
  * </ul>
  *
- * @author Your Name
+ * @author Chandrasekhar Reddy Sammeta
  * @since 1.0
  */
 public class Calculator {
