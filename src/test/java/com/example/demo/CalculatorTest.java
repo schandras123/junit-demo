@@ -119,13 +119,6 @@ class CalculatorTest {
         assertNotNull(calculator);
     }
 
-    @Disabled("Temporarily disabled test")
-    @Test
-    void testDisabledExample() {
-        // This test is disabled temporarily; add implementation or enable when ready.
-        // Intended to test a future Calculator feature.
-    }
-
     @ParameterizedTest
     @ValueSource(ints = {2, 4, 6, 8})
     void testIsEvenWithParameters(int number) {
